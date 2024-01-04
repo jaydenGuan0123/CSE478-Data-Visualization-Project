@@ -1,0 +1,54 @@
+/* styles.css */
+svg {
+    width: 2000px;
+    height: 1000px;
+    background-color: white;
+    border: 1px solid #D3D3D3;
+    border-radius: 3px;
+}
+.myContainer {
+    margin:auto;
+    width:1900px;
+}
+.custom-select {
+display: block;
+width: 200px;
+padding: 10px;
+font-size: 16px;
+border: 1px solid #2d1a1a;
+border-radius: 5px;
+appearance: none;
+-webkit-appearance: none;
+-moz-appearance: none;
+
+}
+
+.btn {
+position: relative;
+width: 230px;
+height: 230px;
+margin: 10px;
+border-radius: 50%;
+text-align: center;
+line-height: 1;
+padding: 10px;
+border: 4px bold black;
+background-color: lightgray;
+color: black;
+font-size: 20px;
+font-weight: bold;
+}
+
+.btn::after {
+content: "";
+display: inline-block;
+height: 100%;
+vertical-align: middle;
+}
+
+.btn span {
+display: block;
+line-height: 1;
+font-size: inherit;
+margin-top: -6px; /* Adjust this value to move the second line up or down */
+}

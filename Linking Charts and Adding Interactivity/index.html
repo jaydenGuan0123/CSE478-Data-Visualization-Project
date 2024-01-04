@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <title>Homework #2: D3 Linking - CSE 478 - Fall 2023</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" />
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <style>
+            svg {
+                width: 580px;
+                height: 400px;
+                background-color: white;
+                border: 1px solid #D3D3D3;
+                border-radius: 3px;
+            }
+            .myContainer {
+                margin:auto;
+                width:1210px;
+            }
+            #bar_div, #pie_div {
+                float:left;
+                width:600px;
+                padding:10px;
+            }
+            #bar_div {
+                float:right;
+            }
+            div.tooltip {
+                position: absolute;
+                text-align: center;
+                width: 100px;
+                height: 60px;
+                padding: 2px;
+                background-color: white;
+                font: 16px sans-serif;
+                border: 2px solid #0a0000;
+                border-radius: 8px;
+                }
+        </style>
+    </head>
+    <body>
+        <div class="myContainer">
+            <h1 class="text-center">Homework #2: D3 Linking</h1>
+            <h3 class="text-center">Jiandong Guan - jguan16@asu.edu</h3>
+            <hr>
+            <form class="border border-dark rounded p-2 mb-2 bg-light shadow-sm">
+                <label for="wordbox">Enter text here</label>
+                <textarea class="form-control mb-2 mt-1" id="wordbox" rows="8"></textarea>
+                <button type="button" class="btn btn-dark mb-1" onclick="submitText();">Submit text</button>
+            </form>    
+            <div id="pie_div" class="border border-dark rounded bg-light shadow-sm">
+                    Distribution of characters
+                    <svg id="pie_svg"></svg>
+            </div>
+            <div id="bar_div" class="border border-dark rounded bg-light shadow-sm">
+                    Count for selected character is <span id="character-name">NONE</span>.
+                    <svg id="bar_svg"></svg>
+            </div>
+        </div>&nbsp;&nbsp;&nbsp;
+    </body>
+<script>
+        function submitText() {
+        //get input and convert to lowercase
+        var textareaValue = document.getElementById('wordbox').value.toLowerCase();
+        //convert string to character
+        var characters = textareaValue.split("");
+        //store character in an array
+        var charCountMap = {};
+        for (var i = 0; i < textareaValue.length; i++) {
+                      var char = textareaValue.charAt(i);
+                     if (charCountMap[char]) {
+                    charCountMap[char]++;
+                } else {
+                    charCountMap[char] = 1;
+                }
+            }
+        //vowel array
+        var vowelsCountArray = Object.keys(charCountMap).map(function (char) {
+            if (/[aeiouAEIOU]/.test(char)) {
+                return { character: char, count: charCountMap[char] };}
+            }).filter(function (char) {
+          return char !== undefined; // Filter out undefined elements
+              });
+        //consonant array
+        var consonantsCountArray = Object.keys(charCountMap).map(function (char) {
+            if (/[a-zA-Z]/.test(char)) {
+                   if (/[aeiouAEIOU]/.test(char)){}
+                   else{
+                return { character: char, count: charCountMap[char] };}}
+            }).filter(function (char) {
+          return char !== undefined; 
+                     });
+        //punctuation array
+        var punctuationsCountArray = Object.keys(charCountMap).map(function (char) {
+            if(char=="."||char==","||char=="?"||char=="!"||char==":"||char==";"){
+                return { character: char, count: charCountMap[char] };}
+            }).filter(function (char) {
+          return char !== undefined; 
+             });
+        //get amount of vowels
+        var vowels = characters.reduce(function (count,character) {
+                if (/[aeiouAEIOU]/.test(character)) {
+                //or using character=="a/e/i/o/u"
+                return count + 1;
+            } else {
+                    return count;
+                }
+            }, 0);//0 is the intial value for the count
+           
+        //get amount of consonants
+        var consonants = characters.reduce(function (count,character) {
+                if (/[a-zA-Z]/.test(character)) {
+                    if (/[aeiouAEIOU]/.test(character))
+                    return count ;
+                    else {
+                    return count+1;
+                }
+            }
+            else{
+                return count ;
+            }}, 0);
+        //get amount of punctuations
+        var punctuations=characters.reduce(function(count,character){
+            if(character=="."||character==","||character=="?"||character=="!"||character==":"||character==";"){
+                return count+1;
+            }
+            else{
+                return count;
+            }},0);
+        //data array for amount of each element
+        const data=[{label:"vowels",value:vowels},
+                {label:"consonants",value:consonants},
+                {label:"punctuations",value:punctuations},
+              ];
+               svg1 = d3.select('#pie_svg');
+        //get width height
+        var width=+svg1.style('width').replace('px','');
+        var height=+svg1.style('height').replace('px','');
+        var radius = Math.min(width, height) / 2;
+        //set up svg1 and avg2
+               svg1 = d3.select('#pie_svg')
+                     .append('g')
+                     .attr("transform", `translate(${width / 2},${height / 2})`);
+        var svg2 = d3.select('#bar_svg');
+        //set up pie element
+        var pie = d3.pie()
+                    .sort(null)
+                    .value((d) => d.value);
+        var arc = d3.arc()
+                    .innerRadius(radius * 0.5) 
+                    .outerRadius(radius*0.9);
+        var color = d3.scaleOrdinal(d3.schemeSet3);
+        var arcs = svg1.selectAll(".arc")
+                            .data(pie(data))
+                            .enter()
+                            .append("g")
+                            .attr("class", "arc");
+        var text1=arcs.append("text")
+                      .attr("text-anchor", "middle");
+                 arcs.on("mouseover", function (event, d) {
+                          d3.select(this).select("path")
+                            .attr("stroke", "black")
+                            .attr("stroke-width", 4);
+                            text1.text(d.data.label+":"+d.data.value);
+                            ;})
+                            .on("mouseout", function (event, d) {
+                            d3.select(this).select("path")
+                            .attr("stroke", "black")
+                            .attr("stroke-width", 1);
+                            text1.text("");
+                                })
+                            .append("path")
+                            .attr("d", arc)
+                            .attr("fill", (d) => color(d.data.label))
+                            .attr("stroke", "black")
+                            .attr("stroke-width", 1)
+                            .on("click", function (event, d) {
+                    //set up bar
+                    //clear bar chart when choose different element
+                        svg2.select('g').remove();
+                        const label = d.data.label;
+                        var data1;
+                    //determine what element is clicked
+                    if(label=="vowels")
+                    data1=vowelsCountArray;
+                    if(label=="consonants")
+                    data1=consonantsCountArray;
+                    if(label=="punctuations")
+                    data1=punctuationsCountArray;
+                    var margin = { top: 20, right: 20, bottom: 30, left: 40 };
+                    var innerwidth=width-margin.left-margin.right;
+                    var innerheight=height-margin.top-margin.bottom;
+                    const g=svg2.append('g')
+                                .attr('width', innerwidth)
+                                .attr('height', innerheight)
+                            .attr('transform', `translate(${margin.left},${margin.top})`);
+                    var x = d3.scaleBand()
+                            .domain(data1.map(d => d.character))
+                            .range([0, innerwidth])
+                            .padding(0.2);
+                    var y = d3.scaleLinear()
+                            .domain([0, d3.max(data1, d => d.count)])
+                            .range([innerheight, 0]);
+                    //set up tooltip
+                    var div = d3.select("body").append("div")
+                            .attr("class", "tooltip")
+                            .style("opacity", 0);
+                        g.selectAll('.bar')
+                        .data(data1)
+                        .enter()
+                        .append('rect')
+                        .attr('class', 'bar')
+                        .attr('x', d => x(d.character))
+                        .attr('y', d => y(d.count))
+                        .attr('width', x.bandwidth())
+                        .attr('height', d => innerheight - y(d.count))
+                        .attr('fill', 'skyblue')
+                        .attr('stroke', 'black') 
+                        .attr('stroke-width', 1)
+                        .on("mouseover", function(event,d) {
+                        div.style("opacity", .9);
+                        div.html("Character:"+d.character + "<br/>" + "Count:"+ d.count)
+                            .style("left", (event.pageX) + "px")
+                            .style("top", (event.pageY) + "px");
+                        })
+                        .on("mouseout", function(d) {
+                            div.style("opacity", 0);
+                            });
+                        g.append('g')
+                        .attr('class', 'x-axis')
+                        .attr('transform', `translate(0,${innerheight})`)
+                        .call(d3.axisBottom(x));
+                        g.append('g')
+                        .attr('class', 'y-axis')
+                        .call(d3.axisLeft(y));
+                            })
+        //clear bar chart when click summit
+          svg2.select('g').remove();
+        }
+    </script>
+</html> 

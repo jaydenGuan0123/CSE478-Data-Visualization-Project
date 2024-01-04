@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <title>Homework #4: Global Developments - CSE 478 - Fall 2023</title>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" />
+            <script src="https://d3js.org/d3.v7.min.js"></script>
+            
+            <style>
+                svg {
+                width: 1600px;
+                height: 800px;
+                background-color: white;
+              
+            }
+                .row{
+                    margin: 10px;
+                }
+    select {
+      position: relative;
+      top: 10px; 
+      left: 10px;
+      z-index: 2; 
+      padding: 10px 10px;
+      cursor: pointer;
+      background-color: rgb(111, 172, 189);
+      border: 2px solid black;
+      border-radius: 100px;
+      width:60%;
+      margin-right: 35px
+    }
+    .col-3{
+          display: flex;
+    }
+    .space-after-label {
+        margin-right: 20px; /* Adjust the margin size as needed */
+    }
+            </style>
+        </head>
+        <body>
+            <div class="myContainer">
+                <h1 class="text-center">Homework #4: Global Developments</h1>
+                <h3 class="text-center">Jiandong Guan - jguan16@asu.edu</h3>
+            </div>
+                <div class="row">
+                        <div class='col-2' id='X-axis11'>
+                            <label for="x-axis-select" >X-axis:</label>
+                            <select id="X-axis">
+                                <option value="Data.Health.Death Rate">Death Rate</option>
+                                <option value="Data.Health.Fertility Rate">Fertility Rate</option>
+                                <option value="Data.Health.Life Expectancy at Birth, Female">Life Expectancy at Birth, Female</option>
+                                <option value="Data.Health.Life Expectancy at Birth, Male">Life Expectancy at Birth, Male</option>
+                                <option value="Data.Health.Life Expectancy at Birth, Total">Life Expectancy at Birth, Total</option>
+                                <option value="Data.Health.Population Growth">Population Growth</option>
+                                <option value="Data.Rural Development.Land Area">Development.Land Area</option>
+                                <option value="Data.Rural Development.Agricultural Land">Rural Development.Agricultural Land</option>
+                                <option value="Data.Rural Development.Arable Land">Rural Development.Arable Land</option>
+                                <option value="Data.Urban Development.Urban Population Percent Growth">Development.Urban Population Percent Growth</option>
+                                <option value="Data.Urban Development.Urban Population Percent">Development.Urban Population Percent</option>
+                                <option value="Data.Infrastructure.Telephone Lines per 100 People">Infrastructure.Telephone Lines per 100 People</option>
+                                <option value="Data.Infrastructure.Telephone Linese">Infrastructure.Telephone Linese</option>
+
+                            </select>
+                        </div>
+                        <div class='col-2' id='size11'>
+                            <label for="size-select" >Size:</label>
+                            <select id="size">
+                                <option value="Data.Health.Death Rate">Death Rate</option>
+                                <option value="Data.Health.Fertility Rate">Fertility Rate</option>
+                                <option value="Data.Health.Life Expectancy at Birth, Female">Life Expectancy at Birth, Female</option>
+                                <option value="Data.Health.Life Expectancy at Birth, Male">Life Expectancy at Birth, Male</option>
+                                <option value="Data.Health.Life Expectancy at Birth, Total">Life Expectancy at Birth, Total</option>
+                                <option value="Data.Health.Population Growth">Population Growth</option>
+                                <option value="Data.Rural Development.Land Area">Development.Land Area</option>
+                                <option value="Data.Rural Development.Agricultural Land">Rural Development.Agricultural Land</option>
+                                <option value="Data.Rural Development.Arable Land">Rural Development.Arable Land</option>
+                                <option value="Data.Urban Development.Urban Population Percent Growth">Development.Urban Population Percent Growth</option>
+                                <option value="Data.Urban Development.Urban Population Percent">Development.Urban Population Percent</option>
+                                <option value="Data.Infrastructure.Telephone Lines per 100 People">Infrastructure.Telephone Lines per 100 People</option>
+                                <option value="Data.Infrastructure.Telephone Linese">Infrastructure.Telephone Linese</option>
+                            </select>
+                        </div>
+                        <div class='col-3' id='div-three'>
+                            <label class="space-after-label">Regions:</label>
+                            <div class="form-check" id="kk">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="option1" name="option1" value="South Asia" >
+                                    <label class="form-check-label" for="option1">South Asia</label>
+                                </div>
+                                
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="option2" name="option2" value="Europe & Central Asia" >
+                                    <label class="form-check-label" for="option2">Europe & Central Asia</label>
+                                </div>
+                                
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="option3" name="option3" value="Middle East & North Africa" >
+                                    <label class="form-check-label" for="option3">Middle East & North Africa</label>
+                                </div>
+                                
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="option4" name="option4" value="Sub-Saharan Africa" >
+                                    <label class="form-check-label" for="option4">Sub-Saharan Africa</label>
+                                </div>
+                                
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="option5" name="option5" value="Latin America & Caribbean" >
+                                    <label class="form-check-label" for="option5">Latin America & Caribbean</label>
+                                </div>
+                                
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="option6" name="option6" value="East Asia & Pacific" >
+                                    <label class="form-check-label" for="option6">East Asia & Pacific</label>
+                                </div>
+                                
+                             <button id="getCheckedValuesButton">Finish</button>
+                            </div>
+                        </div>
+                        <div class='col-2' id='div-four'>
+                            <label for="years-select">Choose the year(1980-2013):</label>
+                        <input type="number" id="tentacles" name="tentacles" min="1980" max="2013" />
+                        </div>
+                        <div class='col-2'>
+                            <button class="btn btn-primary" id="play-button" >Play</button>
+                        </div>
+                        <div class='col-4'>
+                            <label for="box-select" >Box Plot:</label>
+                            <select id="box">
+                                <option value="Data.Health.Death Rate">Death Rate</option>
+                                <option value="Data.Health.Fertility Rate">Fertility Rate</option>
+                                <option value="Data.Health.Life Expectancy at Birth, Female">Life Expectancy at Birth, Female</option>
+                                <option value="Data.Health.Life Expectancy at Birth, Male">Life Expectancy at Birth, Male</option>
+                                <option value="Data.Health.Life Expectancy at Birth, Total">Life Expectancy at Birth, Total</option>
+                                <option value="Data.Health.Population Growth">Population Growth</option>
+                                <option value="Data.Rural Development.Land Area">Development.Land Area</option>
+                                <option value="Data.Rural Development.Agricultural Land">Rural Development.Agricultural Land</option>
+                                <option value="Data.Rural Development.Arable Land">Rural Development.Arable Land</option>
+                                <option value="Data.Urban Development.Urban Population Percent Growth">Development.Urban Population Percent Growth</option>
+                                <option value="Data.Urban Development.Urban Population Percent">Development.Urban Population Percent</option>
+                                <option value="Data.Infrastructure.Telephone Lines per 100 People">Infrastructure.Telephone Lines per 100 People</option>
+                                <option value="Data.Infrastructure.Telephone Linese">Infrastructure.Telephone Linese</option>
+                            </select>
+                        </div>
+                    </div>
+                
+                <div id="myDataVis">
+                    <svg id='svg1'></svg>
+                    <svg id='svg2'></svg>
+                </div>
+                <div id="tooltip" style="position: absolute; visibility: hidden; padding: 10px; background: white; border: 2px solid #0a0000; border-radius: 8px; pointer-events: none;"></div>
+        </body>
+        <script src="jguan16.js"></script>
+</html>

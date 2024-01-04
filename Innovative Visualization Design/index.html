@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <title>Homework #5:  Innovative Vis - CSE 478 - Fall 2023</title>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" />
+            <script src="https://d3js.org/d3.v7.min.js"></script>
+      <style>
+         .flex-container {
+            display: flex;
+            justify-content: center; /* Aligns horizontally */
+            height: 100vh; /* Full viewport height */
+        }
+        .plane-input {
+            margin: 10px auto; /* Center the container */
+            text-align: center;
+            height: 10px; /* Set a maximum width */
+            display: flex; /* Use flex layout */
+            justify-content: center; /* Center items horizontally */
+            align-items: center; /* Center items vertically */
+            flex-wrap: wrap; /* Allow items to wrap */
+        }
+
+
+        .plane-input input,
+        .plane-input select {
+            margin-right: 20px; /* 20px gap between elements */
+        }
+        svg {
+            max-width: 100%; 
+            max-height: 100vh; 
+            overflow: visible;
+        }
+        .description{
+            margin:auto;
+            width:1410px;
+            border-style:dashed;
+        }
+      </style>
+</head>
+<body>
+  <div class="myContainer">
+    <h1 class="text-center">Homework #5:  Innovative Vis</h1>
+    <h3 class="text-center">Jiandong Guan - jguan16@asu.edu</h3>
+</div>
+<div class="description">
+    <h1 class="text-center">Find the information of exoplanets discovered by NASA missions</h1>
+    <div id="text_div" style="font-size: 23px;">
+        This visulization allow you to input the exoplanet discovered by NASA missions, you can choose which attribute 
+        you are interested with, the little rocket which is desigend by NASA will fly to the corresponed spot in the radial
+        plot.The domain of the scale include all the exoplanets.Also, on the left handside, there is a text area showing 
+        the exoplanets type and the attribute the information. For example, you can input "16 Cygni B b".
+    </div>
+</div>
+<div class="plane-input">
+  <label for="planeInput">Enter a Planet Name:</label>
+        <input type="text" id="planeInput">
+  <label for="planeSelect">Select an Attribute:</label>
+        <select id="planeSelect">
+            <option value="distance">distance</option>
+            <option value="stellar_magnitude">stellar_magnitude</option>
+            <option value="discovery_year">discovery_year</option>
+            <option value="eccentricity">eccentricity</option>
+            <option value="radius_multiplier">radius_multiplier</option>
+            <option value="orbital_period">orbital_period</option>
+        </select>
+        <button id="submitPlane">Enter</button>
+</div>
+<div class="flex-container">
+  <svg width="1200" height="1200"></svg>
+</div>
+    
+</body>
+<script src="jguan16.js"></script>
+</html>
